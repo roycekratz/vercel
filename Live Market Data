@@ -1,0 +1,13 @@
+export default function handler(req, res) {
+  res.status(200).json({
+    boxedBeefChoice: "312.45",
+    liveSteers: "186.37",
+    feederCattle: "256.80",
+    boxedPorkLoins: "105.12",
+    liveHogs: "72.19",
+    feederPigs: "52.45",
+    boxedLamb: "610.75",
+    liveLambs: "158.90",
+    feederLambs: "224.60"
+  });
+}
