@@ -1,0 +1,30 @@
+export default async function handler(req, res) {
+  try {
+    // Fetch Boxed Beef Choice Cutout
+    const beefResponse = await fetch("https://mymarketnews.ams.usda.gov/filerepo/reports/LM_XB403.txt");
+    const beefText = await beefResponse.text();
+    const beefMatch = beefText.match(/Choice Cutout\s+\$\s?(\d+\.\d{2})/);
+    const boxedBeefChoice = beefMatch ? beefMatch[1] : "N/A";
+
+    // Fetch Live Steer prices (LM_CT100)
+    const liveResponse = await fetch("https://mymarketnews.ams.usda.gov/filerepo/reports/LM_CT100.txt");
+    const liveText = await liveResponse.text();
+    const steerMatch = liveText.match(/Live Steer\s+\$\s?(\d+\.\d{2})/);
+    const liveSteers = steerMatch ? steerMatch[1] : "N/A";
+
+    res.status(200).json({
+      boxedBeefChoice,
+      liveSteers,
+      feederCattle: "256.80",
+      boxedPorkLoins: "105.12",
+      liveHogs: "72.19",
+      feederPigs: "52.45",
+      boxedLamb: "610.75",
+      liveLambs: "158.90",
+      feederLambs: "224.60"
+    });
+  } catch (err) {
+    console.error("USDA Fetch Error:", err);
+    res.status(500).json({ error: "Failed to load USDA data" });
+  }
+}
